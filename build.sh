@@ -1,7 +1,7 @@
 #!/bin/bash
 
-: "${BTCPAYGEN_DOCKER_IMAGE:=btcpayserver/docker-compose-generator}"
-if [ "$BTCPAYGEN_DOCKER_IMAGE" == "btcpayserver/docker-compose-generator:local" ]
+: "${BTCPAYGEN_DOCKER_IMAGE:=spazzymoto/docker-compose-generator}"
+if [ "$BTCPAYGEN_DOCKER_IMAGE" == "spazzymoto/docker-compose-generator:local" ]
 then
     docker build docker-compose-generator -f docker-compose-generator/linuxamd64.Dockerfile --tag $BTCPAYGEN_DOCKER_IMAGE
 else

@@ -123,7 +123,7 @@ You can read [the article](https://medium.com/@BtcpayServer/hosting-btcpay-serve
 * `ACME_CA_URI`: The API endpoint to ask for HTTPS certificate (Default: `https://acme-v01.api.letsencrypt.org/directory`)
 * `BTCPAY_HOST_SSHKEYFILE`: Optional, SSH private key that BTCPay can use to connect to this VM's SSH server. This key will be copied to BTCPay's data directory
 * `BTCPAY_SSHTRUSTEDFINGERPRINTS`: Optional, BTCPay will ensure that it is connecting to the expected SSH server by checking the host's public key against these fingerprints
-* `BTCPAYGEN_DOCKER_IMAGE`: Optional, Specify which generator image to use if you have customized the C# generator. Set to `btcpayserver/docker-compose-generator:local` to build the generator locally at runtime.
+* `BTCPAYGEN_DOCKER_IMAGE`: Optional, Specify which generator image to use if you have customized the C# generator. Set to `spazzymoto/docker-compose-generator:local` to build the generator locally at runtime.
 * `BTCPAY_IMAGE`: Optional, Specify which btcpayserver image to use if you have a customized btcpayserver.
 
 Additionally, there are specific environment variables for some addons:
@@ -283,18 +283,18 @@ BTCPAY_SSHKEYFILE=/datadir/id_rsa
 3. Create a docker-compose fragment ([Example for BTC](docker-compose-generator/docker-fragments/bitcoin.yml))
 4. Add your `CryptoDefinition` ([Example for BTC](docker-compose-generator/src/CryptoDefinition.cs))
 
-`build.sh` is using a pre-built image of the `docker-compose generator` on [docker hub](https://hub.docker.com/r/btcpayserver/docker-compose-generator/).
-If you modify the code source of `docker-compose generator` (for example, the `CryptoDefinition` [Example for BTC](docker-compose-generator/src/CryptoDefinition.cs)), you need to configure `build.sh` to use your own image by setting the environment variable `BTCPAYGEN_DOCKER_IMAGE` to `btcpayserver/docker-compose-generator:local`.
+`build.sh` is using a pre-built image of the `docker-compose generator` on [docker hub](https://hub.docker.com/r/spazzymoto/docker-compose-generator/).
+If you modify the code source of `docker-compose generator` (for example, the `CryptoDefinition` [Example for BTC](docker-compose-generator/src/CryptoDefinition.cs)), you need to configure `build.sh` to use your own image by setting the environment variable `BTCPAYGEN_DOCKER_IMAGE` to `spazzymoto/docker-compose-generator:local`.
 
 ```bash
 cd docker-compose-generator
-BTCPAYGEN_DOCKER_IMAGE="btcpayserver/docker-compose-generator:local"
+BTCPAYGEN_DOCKER_IMAGE="spazzymoto/docker-compose-generator:local"
 ```
 
 Or on powershell:
 ```powershell
 cd docker-compose-generator
-$BTCPAYGEN_DOCKER_IMAGE="btcpayserver/docker-compose-generator:local"
+$BTCPAYGEN_DOCKER_IMAGE="spazzymoto/docker-compose-generator:local"
 ```
 
 Then run `./build.sh` or `. .\build.ps1`.
@@ -308,7 +308,7 @@ We are trying to update our dependencies to run on `arm32v7` and `x64` boards. H
 
 | Source | Image | Version | x64 | arm32v7 | links |
 |---|---|---|:-:|:-:|:-:|
-| * | btcpayserver/docker-compose-generator | latest | [✔️](https://raw.githubusercontent.com/btcpayserver/btcpayserver-docker/dcg-latest/docker-compose-generator/linuxamd64.Dockerfile) | [✔️](https://raw.githubusercontent.com/btcpayserver/btcpayserver-docker/dcg-latest/docker-compose-generator/linuxarm32v7.Dockerfile) | [Github](https://github.com/btcpayserver/btcpayserver-docker) - [DockerHub](https://hub.docker.com/r/btcpayserver/docker-compose-generator) |
+| * | spazzymoto/docker-compose-generator | latest | [✔️](https://raw.githubusercontent.com/btcpayserver/btcpayserver-docker/dcg-latest/docker-compose-generator/linuxamd64.Dockerfile) | [✔️](https://raw.githubusercontent.com/btcpayserver/btcpayserver-docker/dcg-latest/docker-compose-generator/linuxarm32v7.Dockerfile) | [Github](https://github.com/btcpayserver/btcpayserver-docker) - [DockerHub](https://hub.docker.com/r/spazzymoto/docker-compose-generator) |
 | * | btcpayserver/docker-compose-builder | 1.23.2 | ️❌ | [✔️](https://raw.githubusercontent.com/btcpayserver/docker-compose-builder/v1.23.2/linuxarm32v7.Dockerfile) | [Github](https://github.com/btcpayserver/docker-compose-builder) - [DockerHub](https://hub.docker.com/r/btcpayserver/docker-compose-builder) |
 | bitcoin.yml | btcpayserver/bitcoin | 0.17.0 | [✔️](https://raw.githubusercontent.com/btcpayserver/dockerfile-deps/Bitcoin/0.17.0/Bitcoin/0.17.0/linuxamd64.Dockerfile) | [✔️](https://raw.githubusercontent.com/btcpayserver/dockerfile-deps/Bitcoin/0.17.0/Bitcoin/0.17.0/linuxarm32v7.Dockerfile) | [Github](https://github.com/btcpayserver/dockerfile-deps) - [DockerHub](https://hub.docker.com/r/btcpayserver/bitcoin) |
 | bitcoin-clightning.yml | btcpayserver/lightning | v0.6.3-4 | [✔️](https://raw.githubusercontent.com/btcpayserver/lightning/basedon-v0.6.3-4/Dockerfile) | [✔️](https://raw.githubusercontent.com/btcpayserver/lightning/basedon-v0.6.3-4/linuxarm32v7.Dockerfile) | [Github](https://github.com/btcpayserver/lightning) - [DockerHub](https://hub.docker.com/r/btcpayserver/lightning) |
