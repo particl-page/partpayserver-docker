@@ -4,24 +4,24 @@ services:
   particld:
       restart: unless-stopped
       container_name: btcpayserver_particld
-      image: particl:0.18.0.3
+      image: spazzymoto/particl:0.18.0.6rc1
       environment:
-        PARTICL_NETWORK: ${NPARTICL_NETWORK:-regtest}
-        BITCOIN_EXTRA_ARGS: |
+        PARTICL_NETWORK: ${NBITCOIN_NETWORK:-regtest}
+        PARTICL_EXTRA_ARGS: |
+          rpcbind=particld
           rpcport=43782
-          port=39388
-          disablewallet=1
+          port=51738
           whitelist=0.0.0.0/0
       expose:
         - "43782"
-        - "39388"
+        - "51738"
       volumes:
         - "particl_datadir:/data"
   nbxplorer:
       environment:
         NBXPLORER_CHAINS: "part"
         NBXPLORER_PARTRPCURL: http://particld:43782/
-        NBXPLORER_PARTNODEENDPOINT: particld:39388
+        NBXPLORER_PARTNODEENDPOINT: particld:51738
       volumes:
         - "particl_datadir:/root/.particl"
   btcpayserver:
