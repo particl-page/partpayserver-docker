@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  particld:
+      restart: unless-stopped
+      container_name: btcpayserver_particld
+      image: particl:0.18.0.3
+      environment:
+        PARTICL_NETWORK: ${NPARTICL_NETWORK:-regtest}
+        BITCOIN_EXTRA_ARGS: |
+          rpcport=43782
+          port=39388
+          disablewallet=1
+          whitelist=0.0.0.0/0
+      expose:
+        - "43782"
+        - "39388"
+      volumes:
+        - "particl_datadir:/data"
+  nbxplorer:
+      environment:
+        NBXPLORER_CHAINS: "part"
+        NBXPLORER_PARTRPCURL: http://particld:43782/
+        NBXPLORER_PARTNODEENDPOINT: particld:39388
+      volumes:
+        - "particl_datadir:/root/.particl"
+  btcpayserver:
+      environment:
+        BTCPAY_CHAINS: "part"
+        BTCPAY_PARTEXPLORERURL: http://nbxplorer:32838/
+volumes:
+  particl_datadir:
