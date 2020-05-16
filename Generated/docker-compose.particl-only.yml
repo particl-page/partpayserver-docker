@@ -1,0 +1,43 @@
+version: "3"
+services:
+  btcpayserver:
+    restart: unless-stopped
+    image: ${BTCPAY_IMAGE:-spazzymoto/btcpayserver:latest}
+    expose:
+    - "49392"
+    environment:
+      BTCPAY_POSTGRES: User ID=postgres;Host=postgres;Port=5432;Database=btcpayserver${NBITCOIN_NETWORK:-regtest}
+      BTCPAY_NETWORK: ${NBITCOIN_NETWORK:-regtest}
+      BTCPAY_BIND: 0.0.0.0:49392
+      BTCPAY_EXTERNALURL: ${BTCPAY_PROTOCOL:-https}://${BTCPAY_HOST}/
+      BTCPAY_ROOTPATH: ${BTCPAY_ROOTPATH:-/}
+      BTCPAY_SSHTRUSTEDFINGERPRINTS: ${BTCPAY_SSHTRUSTEDFINGERPRINTS}
+      BTCPAY_SSHKEYFILE: ${BTCPAY_SSHKEYFILE}
+      BTCPAY_DEBUGLOG: btcpay.log
+    links:
+    - postgres
+    volumes:
+    - "btcpay_datadir:/datadir"
+    - "nbxplorer_datadir:/root/.nbxplorer"
+    ports:
+    - "3020:49392"
+  nbxplorer:
+    restart: unless-stopped
+    image: spazzymoto/nbxplorer:latest
+    expose:
+    - "32838"
+    environment:
+      NBXPLORER_NETWORK: ${NBITCOIN_NETWORK:-regtest}
+      NBXPLORER_BIND: 0.0.0.0:32838
+    volumes:
+    - "nbxplorer_datadir:/datadir"
+  postgres:
+    restart: unless-stopped
+    image: postgres:9.6.5
+    volumes:
+    - "postgres_datadir:/var/lib/postgresql/data"
+volumes:
+  btcpay_datadir: 
+  nbxplorer_datadir: 
+  postgres_datadir: 
+networks: {}
