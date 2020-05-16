@@ -2,7 +2,7 @@ version: "3"
 
 services:
   clightning_groestlcoin:
-    image: groestlcoin/lightning:v0.6.2-2
+    image: groestlcoin/lightning:v0.8.2
     stop_signal: SIGKILL
     container_name: btcpayserver_clightning_groestlcoin
     restart: unless-stopped
@@ -29,7 +29,7 @@ services:
       - nbxplorer
       - groestlcoind
   clightning_groestlcoin_charge:
-    image: groestlcoin/groestlcoin-lightning-charge:version-0.4.6
+    image: groestlcoin/groestlcoin-lightning-charge:version-0.4.19
     restart: unless-stopped
     environment:
       NETWORK: ${NBITCOIN_NETWORK:-regtest}
@@ -45,8 +45,8 @@ services:
   btcpayserver:
     environment:
       BTCPAY_GRSLIGHTNING: "type=clightning;server=unix://etc/clightning_groestlcoin/lightning-rpc"
-      BTCPAY_GRSEXTERNALSPARK: "server=${BTCPAY_PROTOCOL:-https}://${BTCPAY_HOST}${BTCPAY_ROOTPATH:-/}spark/grs;cookiefile=/etc/clightning_groestlcoin_spark/.cookie"
-      BTCPAY_GRSEXTERNALCHARGE: "server=${BTCPAY_PROTOCOL:-https}://${BTCPAY_HOST}${BTCPAY_ROOTPATH:-/}lightning-charge/grs/;cookiefilepath=/etc/clightning_groestlcoin_charge/.cookie"
+      BTCPAY_GRSEXTERNALSPARK: "server=/spark/grs;cookiefile=/etc/clightning_groestlcoin_spark/.cookie"
+      BTCPAY_GRSEXTERNALCHARGE: "server=/lightning-charge/grs/;cookiefilepath=/etc/clightning_groestlcoin_charge/.cookie"
     volumes:
       - "clightning_groestlcoin_datadir:/etc/clightning_groestlcoin"
       - "clightning_groestlcoin_spark:/etc/clightning_groestlcoin_spark"
@@ -54,7 +54,7 @@ services:
     links:
       - clightning_groestlcoin
   clightning_groestlcoin_spark:
-    image: groestlcoin/groestlcoin-spark:version-0.2.2
+    image: groestlcoin/groestlcoin-spark:version-0.2.14
     stop_signal: SIGKILL
     restart: unless-stopped
     environment:

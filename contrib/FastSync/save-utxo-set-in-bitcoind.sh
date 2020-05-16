@@ -25,6 +25,11 @@ fi
 cd /data
 TAR_NAME="utxo-snapshot-bitcoin-$NBITCOIN_NETWORK-$PRUNED_HEIGHT.tar"
 echo "Creating $TAR_NAME..."
-tar -cf "$TAR_NAME" "$NETWORK_DIRECTORY/blocks/"
-tar -rf "$TAR_NAME" "$NETWORK_DIRECTORY/chainstate/"
+echo "Adding $NETWORK_DIRECTORY/blocks/*"
+cd "$NETWORK_DIRECTORY"
+tar -cvf "$TAR_NAME" "blocks/"
+echo "Adding $NETWORK_DIRECTORY/chainstate/*"
+tar -rvf "$TAR_NAME" "chainstate/"
+[[ $NBITCOIN_NETWORK == "mainnet" ]] || mv "$TAR_NAME" "/data/$TAR_NAME"
+echo "TAR file created to /data/$TAR_NAME"
 exit

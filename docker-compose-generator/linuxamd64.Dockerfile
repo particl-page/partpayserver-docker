@@ -1,5 +1,5 @@
 #
-FROM microsoft/dotnet:2.1.500-sdk-alpine3.7 AS builder
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1.101 AS builder
 WORKDIR /source
 COPY src/docker-compose-generator.csproj docker-compose-generator.csproj
 # Cache some dependencies
@@ -8,9 +8,9 @@ COPY src/. .
 RUN dotnet publish --output /app/ --configuration Release
 
 #
-FROM microsoft/dotnet:2.1.6-runtime-alpine3.7
+FROM mcr.microsoft.com/dotnet/core/runtime:3.1.1-buster-slim
+LABEL org.btcpayserver.image=docker-compose-generator
 WORKDIR /datadir
-
 WORKDIR /app
 ENV APP_DATADIR=/datadir
 VOLUME /datadir

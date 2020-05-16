@@ -10,6 +10,7 @@ If ($BTCPAYGEN_DOCKER_IMAGE -eq "spazzymoto/docker-compose-generator:local"){
 
 docker run -v "$(Get-Location)\Generated:/app/Generated" `
            -v "$(Get-Location)\docker-compose-generator\docker-fragments:/app/docker-fragments" `
+           -v "$(Get-Location)\docker-compose-generator\crypto-definitions.json:/app/crypto-definitions.json" `
            -e "BTCPAYGEN_CRYPTO1=$BTCPAYGEN_CRYPTO1" `
            -e "BTCPAYGEN_CRYPTO2=$BTCPAYGEN_CRYPTO2" `
            -e "BTCPAYGEN_CRYPTO3=$BTCPAYGEN_CRYPTO3" `
@@ -21,8 +22,10 @@ docker run -v "$(Get-Location)\Generated:/app/Generated" `
            -e "BTCPAYGEN_CRYPTO9=$BTCPAYGEN_CRYPTO9" `
            -e "BTCPAYGEN_REVERSEPROXY=$BTCPAYGEN_REVERSEPROXY" `
            -e "BTCPAYGEN_ADDITIONAL_FRAGMENTS=$BTCPAYGEN_ADDITIONAL_FRAGMENTS" `
+           -e "BTCPAYGEN_EXCLUDE_FRAGMENTS=$BTCPAYGEN_EXCLUDE_FRAGMENTS" `
            -e "BTCPAYGEN_LIGHTNING=$BTCPAYGEN_LIGHTNING" `
            -e "BTCPAYGEN_SUBNAME=$BTCPAYGEN_SUBNAME" `
+           -e "BTCPAY_HOST_SSHAUTHORIZEDKEYS=$BTCPAY_HOST_SSHAUTHORIZEDKEYS" `
            --rm $BTCPAYGEN_DOCKER_IMAGE
 
 If ($BTCPAYGEN_REVERSEPROXY -eq "nginx") {

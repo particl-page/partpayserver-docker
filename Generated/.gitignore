@@ -1,3 +1,4 @@
-*.tmpl
+nginx.tmpl
 *.toml
 *.json
+pull-images.sh

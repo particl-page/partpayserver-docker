@@ -11,14 +11,13 @@ export OLD_HOST=`cat $BTCPAY_ENV_FILE | sed -n 's/^BTCPAY_HOST=\(.*\)$/\1/p'`
 echo "Changing domain from \"$OLD_HOST\" to \"$NEW_HOST\""
 
 export BTCPAY_HOST="$NEW_HOST"
-export ACME_CA_URI="https://acme-v01.api.letsencrypt.org/directory"
-
+export ACME_CA_URI="production"
+[[ "$OLD_HOST" == "$REVERSEPROXY_DEFAULT_HOST" ]] && export REVERSEPROXY_DEFAULT_HOST="$NEW_HOST"
+pushd . > /dev/null
 # Modify environment file
-sed -i '/^BTCPAY_HOST/d' "$BTCPAY_ENV_FILE"
-sed -i '/^ACME_CA_URI/d' "$BTCPAY_ENV_FILE"
-echo "BTCPAY_HOST=$BTCPAY_HOST" >> "$BTCPAY_ENV_FILE"
-echo "ACME_CA_URI=$ACME_CA_URI" >> "$BTCPAY_ENV_FILE"
-
-cd "`dirname $BTCPAY_ENV_FILE`"
-docker-compose -f "$BTCPAY_DOCKER_COMPOSE" up -d -t "${COMPOSE_HTTP_TIMEOUT:-180}"
+cd "$BTCPAY_BASE_DIRECTORY/btcpayserver-docker"
+. helpers.sh
+btcpay_update_docker_env
+btcpay_up
+popd > /dev/null
 fi

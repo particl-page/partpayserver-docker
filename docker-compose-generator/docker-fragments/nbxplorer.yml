@@ -10,6 +10,7 @@ services:
     environment:
       NBXPLORER_NETWORK: ${NBITCOIN_NETWORK:-regtest}
       NBXPLORER_BIND: 0.0.0.0:32838
+      NBXPLORER_SIGNALFILESDIR: /datadir
     volumes:
       - "nbxplorer_datadir:/datadir"
 
